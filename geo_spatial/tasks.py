@@ -20,73 +20,73 @@ def process_geo_file(self, geo_file_id: str):
         geo_file.save()
 
         parser = FileParser()
-        gdf = parser.parse(geo_file.file.path)
-
-        try:
-            if gdf.crs:
-                pyproj.CRS(gdf.crs)
-        except Exception:
-            gdf.set_crs("EPSG:4326", allow_override=True, inplace=True)
-
-        if getattr(gdf, 'has_z', None) is not None and gdf.has_z.any():
-            gdf.geometry = gdf.geometry.apply(lambda g: shapely.force_2d(g) if g and getattr(g, 'has_z', False) else g)
-
         crs_handler = CRSHandler()
-        original_crs = crs_handler.get_crs_string(gdf)
-        if original_crs and len(original_crs) > 40:
-            original_crs = "Custom Projection"
-            
-        projected_gdf, projected_crs = crs_handler.transform_to_projected(gdf)
-        if projected_crs and len(projected_crs) > 40:
-            projected_crs = "Custom Projection"
-
         calculator = MeasurementCalculator()
-        measurements = calculator.calculate(projected_gdf)
 
-        if gdf.crs and crs_handler.get_crs_string(gdf) != "EPSG:4326":
-            try:
-                gdf_wgs84 = gdf.to_crs("EPSG:4326")
-            except Exception:
-                gdf_wgs84 = gdf
-        else:
-            gdf_wgs84 = gdf
-
-        features_to_create = []
-        batch_size = 1000
         total_created = 0
+        original_crs = None
+        final_projected_crs = None
 
-        for i, (idx, row) in enumerate(gdf_wgs84.iterrows()):
-            properties = {}
-            for col in gdf_wgs84.columns:
-                if col != 'geometry':
-                    val = row[col]
-                    if pd.isna(val):
-                        val = None
-                    properties[col] = str(val) if not isinstance(val, (int, float, str, bool, type(None))) else val
+        for gdf_chunk in parser.parse_in_chunks(geo_file.file.path, chunk_size=2000):
+            try:
+                if gdf_chunk.crs:
+                    pyproj.CRS(gdf_chunk.crs)
+            except Exception:
+                gdf_chunk.set_crs("EPSG:4326", allow_override=True, inplace=True)
 
-            geom = GEOSGeometry(row.geometry.wkb_hex, srid=4326) if row.geometry else None
-            m = measurements[i]
+            if getattr(gdf_chunk, 'has_z', None) is not None and gdf_chunk.has_z.any():
+                gdf_chunk.geometry = gdf_chunk.geometry.apply(lambda g: shapely.force_2d(g) if g and getattr(g, 'has_z', False) else g)
 
-            feature = Feature(
-                geo_file=geo_file,
-                feature_index=i,
-                geometry_type=row.geometry.geom_type if row.geometry else 'Unknown',
-                geometry=geom,
-                properties=properties,
-                area_sqm=m['area_sqm'],
-                length_m=m['length_m'],
-                projected_crs=projected_crs,
-            )
-            features_to_create.append(feature)
+            chunk_orig_crs = crs_handler.get_crs_string(gdf_chunk)
+            if not original_crs:
+                original_crs = chunk_orig_crs
+                if original_crs and len(original_crs) > 40:
+                    original_crs = "Custom Projection"
+                
+            projected_gdf, projected_crs = crs_handler.transform_to_projected(gdf_chunk)
+            if not final_projected_crs:
+                final_projected_crs = projected_crs
+                if final_projected_crs and len(final_projected_crs) > 40:
+                    final_projected_crs = "Custom Projection"
 
-            if len(features_to_create) >= batch_size:
+            measurements = calculator.calculate(projected_gdf)
+
+            if gdf_chunk.crs and crs_handler.get_crs_string(gdf_chunk) != "EPSG:4326":
+                try:
+                    gdf_wgs84 = gdf_chunk.to_crs("EPSG:4326")
+                except Exception:
+                    gdf_wgs84 = gdf_chunk
+            else:
+                gdf_wgs84 = gdf_chunk
+
+            features_to_create = []
+            for i, (idx, row) in enumerate(gdf_wgs84.iterrows()):
+                properties = {}
+                for col in gdf_wgs84.columns:
+                    if col != 'geometry':
+                        val = row[col]
+                        if pd.isna(val):
+                            val = None
+                        properties[col] = str(val) if not isinstance(val, (int, float, str, bool, type(None))) else val
+
+                geom = GEOSGeometry(row.geometry.wkb_hex, srid=4326) if row.geometry else None
+                m = measurements[i]
+
+                feature = Feature(
+                    geo_file=geo_file,
+                    feature_index=total_created + i,
+                    geometry_type=row.geometry.geom_type if row.geometry else 'Unknown',
+                    geometry=geom,
+                    properties=properties,
+                    area_sqm=m['area_sqm'],
+                    length_m=m['length_m'],
+                    projected_crs=final_projected_crs,
+                )
+                features_to_create.append(feature)
+
+            if features_to_create:
                 Feature.objects.bulk_create(features_to_create)
                 total_created += len(features_to_create)
-                features_to_create = []
-
-        if features_to_create:
-            Feature.objects.bulk_create(features_to_create)
-            total_created += len(features_to_create)
 
         geo_file.original_crs = original_crs
         geo_file.feature_count = total_created
