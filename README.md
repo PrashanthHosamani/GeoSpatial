@@ -37,7 +37,7 @@ graph TD
     end
 
     %% Connections
-    Client -- "1. POST /api/files/ (70MB+ .zip)" --> API
+    Client -- "1. POST /api/files/ (.kml /.zip)" --> API
     API -- "2. Save to /media & enqueue task" --> Redis
     API -- "3. Return 201 (Status: PENDING)" --> Client
     
