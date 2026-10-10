@@ -127,7 +127,7 @@ Upload a `.zip` (Shapefile) or `.kml`.
 
 ---
 
-## 🧪 Testing with Provided Datasets
+##  Testing with Provided Datasets
 Inside the repository, you will find a `test_data/` directory containing files you can drag and drop into the frontend dashboard:
 1. [`test_data/river.kml`](./test_data/river.kml): A lightweight KML file containing a single river feature for instant processing.
 2. [`test_data/real_rivers.zip`](./test_data/real_rivers.zip): A Shapefile containing 13 distinct river geometries to demonstrate batch processing, area/length calculation, and precise coordinate projections.
