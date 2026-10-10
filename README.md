@@ -1,4 +1,4 @@
-# 🌍 Geospatial Intelligence Pipeline
+# Geospatial Intelligence Pipeline
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
 ![Django](https://img.shields.io/badge/Django-4.2-092E20?style=for-the-badge&logo=django)
@@ -11,7 +11,7 @@ An enterprise-grade, asynchronous Geospatial File Measurement API. This system i
 
 ---
 
-## 🏗️ End-to-End Architecture
+##  End-to-End Architecture
 
 ```mermaid
 graph TD
@@ -55,7 +55,7 @@ graph TD
 
 ---
 
-## 🚀 Going "Beyond the Minimum Requirements"
+##  Going "Beyond the Minimum Requirements"
 
 This project was built with a strict focus on **Production Readiness, Scalability, and Fault Tolerance**. While a naive implementation might process shapefiles synchronously and store them loosely, this architecture introduces several advanced engineering decisions:
 
@@ -76,7 +76,7 @@ Business logic is strictly decoupled. `views.py` contains zero parsing logic; `t
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 | Component | Technology | Rationale |
 |-----------|-----------|-----------|
@@ -89,7 +89,7 @@ Business logic is strictly decoupled. `views.py` contains zero parsing logic; `t
 
 ---
 
-## 💻 How to Run (Docker)
+## how to Run (Docker)
 
 The entire infrastructure is fully containerized. You do not need to install GDAL, PostGIS, or Redis on your local machine.
 
@@ -110,7 +110,7 @@ The entire infrastructure is fully containerized. You do not need to install GDA
 
 ---
 
-## 📡 API Documentation
+## API Documentation
 
 ### 1. Upload File
 `POST /api/files/`
@@ -127,7 +127,7 @@ Upload a `.zip` (Shapefile) or `.kml`.
 
 ---
 
-## 🧪 Testing with Provided Datasets
+##  Testing with Provided Datasets
 Inside the repository, you will find generated test files you can drag and drop into the frontend dashboard:
 1. `large_dataset.kml`: A robust KML file containing complex routes and polygons.
 2. `mixed_features.zip`: A simulated agricultural grid shapefile containing points, lines, and polygons to demonstrate dynamic measurement routing.
