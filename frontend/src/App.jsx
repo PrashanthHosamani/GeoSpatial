@@ -5,7 +5,7 @@ import axios from 'axios';
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import './index.css';
 
-const API_URL = '/api/files/';
+const API_URL = import.meta.env.VITE_API_BASE_URL || '/api/files/';
 
 // Helper component to auto-zoom map to fit all features
 function MapBoundsUpdater({ features }) {
