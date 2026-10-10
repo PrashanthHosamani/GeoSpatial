@@ -70,11 +70,14 @@ class FileParser:
                     raise ValueError("No .shp file found in the zip file")
 
                 with fiona.open(shape_file_path) as src:
-                    total_rows = len(src)
-                
-                for start in range(0, total_rows, chunk_size):
-                    end = min(start + chunk_size, total_rows)
-                    yield gpd.read_file(shape_file_path, rows=slice(start, end))
+                    chunk = []
+                    for feature in src:
+                        chunk.append(feature)
+                        if len(chunk) == chunk_size:
+                            yield gpd.GeoDataFrame.from_features(chunk, crs=src.crs)
+                            chunk = []
+                    if chunk:
+                        yield gpd.GeoDataFrame.from_features(chunk, crs=src.crs)
 
     def _parse_kml(self, kml_path: str) -> gpd.GeoDataFrame:
         layers = fiona.listlayers(kml_path)
