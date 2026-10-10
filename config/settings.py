@@ -22,12 +22,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',           # GeoDjango
     'rest_framework',               # Django REST Framework
+    'corsheaders',                  # CORS support
     'geo_spatial',                      # Our geospatial API app
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -108,3 +110,6 @@ CELERY_TIMEZONE = 'UTC'
 # ----- File Upload Limits -----
 FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024    # 50 MB
 DATA_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024     # 50 MB
+
+# ----- CORS -----
+CORS_ALLOW_ALL_ORIGINS = True
