@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Amazon River Section</name>
+    <description>A simple line segment representing a section of a river for testing.</description>
+    <Placemark>
+      <name>River Path</name>
+      <LineString>
+        <coordinates>
+          -60.016, -3.123, 0
+          -60.010, -3.128, 0
+          -60.005, -3.132, 0
+          -59.998, -3.139, 0
+          -59.990, -3.142, 0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>
