@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>All Geometry Types</name>
+    
+    <!-- Polygon (Will measure Area) -->
+    <Placemark>
+      <name>Headquarters (Polygon)</name>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>
+              -122.084,37.422,0
+              -122.085,37.422,0
+              -122.085,37.423,0
+              -122.084,37.423,0
+              -122.084,37.422,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+
+    <!-- LineString (Will measure Length) -->
+    <Placemark>
+      <name>Main Highway (LineString)</name>
+      <LineString>
+        <coordinates>
+          -122.080,37.420,0
+          -122.082,37.422,0
+          -122.085,37.425,0
+          -122.087,37.428,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+    <!-- Point (Will measure nothing, as points have no dimension) -->
+    <Placemark>
+      <name>Weather Sensor (Point)</name>
+      <Point>
+        <coordinates>
+          -122.086,37.426,0
+        </coordinates>
+      </Point>
+    </Placemark>
+
+  </Document>
+</kml>
