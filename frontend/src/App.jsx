@@ -123,7 +123,7 @@ function App() {
     <div className="app-container">
       <header>
         <MapPin className="logo-icon" size={32} />
-        <h1>Aereo Cloud <span style={{color: 'var(--text-secondary)', fontWeight: 300}}>| Geo Intelligence</span></h1>
+        <h1>GeoSpatial <span style={{color: 'var(--text-secondary)', fontWeight: 300}}>| Geo Intelligence</span></h1>
       </header>
 
       <main className="layout-grid">
