@@ -95,7 +95,7 @@ The entire infrastructure is fully containerized. You do not need to install GDA
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/PrashanthHosamani/GeoSpatial
    cd geo-measure-api
    ```
 
