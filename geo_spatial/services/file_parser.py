@@ -3,6 +3,9 @@ from zipfile import ZipFile
 import tempfile
 import geopandas as gpd 
 import fiona
+fiona.drvsupport.supported_drivers['KML'] = 'rw'
+fiona.drvsupport.supported_drivers['libKML'] = 'rw'
+fiona.drvsupport.supported_drivers['ESRI Shapefile'] = 'rw'
 import pandas as pd
 
 
