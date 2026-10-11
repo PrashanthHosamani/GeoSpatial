@@ -17,8 +17,6 @@ An enterprise-grade, asynchronous Geospatial File Measurement and Analytics ETL 
 
 - **Interactive Dashboard:** [https://geo-spatial-navy.vercel.app/](https://geo-spatial-navy.vercel.app/)
 - **Live Backend API Gateway:** [http://43.204.218.157:8000/api/files/](http://43.204.218.157:8000/api/files/)
-- **GitHub Repository:** [https://github.com/PrashanthHosamani/GeoSpatial](https://github.com/PrashanthHosamani/GeoSpatial)
-- **Architecture & System Walkthrough:** [assets/demo_walkthrough.mp4](./assets/demo_walkthrough.mp4)
 
 ---
 
